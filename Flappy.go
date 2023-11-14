@@ -5,11 +5,12 @@ import (
 	term "github.com/nsf/termbox-go"
 )
 
-type size struct {
+type Size struct {
 	height int;
 	width int;
 }
 
+var screenSize Size = Size{height: 25, width: 100}
 
 func main() {
 	err:=term.Init()
@@ -19,7 +20,7 @@ func main() {
 	}
 	defer term.Close()
 	
-	//width,heigth :=term.Size()
+	screenSize.width,screenSize.height = term.Size()
 	
 	render()
 	
@@ -36,12 +37,13 @@ func main() {
 func render() {
 	drawCanvas()
 	drawBird(10, 10)
+	drawPipe(20, 10, true)
 	term.Flush()
 }
 
 func drawCanvas() {
-	for i := 0; i < 25; i++ {
-		for j := 0; j < 100; j++ {
+	for i := 0; i < screenSize.height; i++ {
+		for j := 0; j < screenSize.width; j++ {
 			term.SetCell(j, i, ' ', term.ColorBlack, term.ColorCyan)
 		}
 	}
@@ -54,5 +56,11 @@ func drawBird(x, y int) {
 }
 
 func drawPipe(x, y int, down bool) {
-	
+	if (down) {
+		for i := y; i <= screenSize.height; i++ {
+			for j := x; j < x + 4; j++ {
+				term.SetCell(j, i, ' ', term.ColorDefault, term.ColorGreen)
+			}
+		}
+	}
 }
