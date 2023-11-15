@@ -37,7 +37,7 @@ func main() {
 func render() {
 	drawCanvas()
 	drawBird(10, 10)
-	drawPipe(20, 10, true)
+	drawPipe(20, 10, false)
 	term.Flush()
 }
 
@@ -59,8 +59,18 @@ func drawPipe(x, y int, down bool) {
 	if (down) {
 		for i := y; i <= screenSize.height; i++ {
 			for j := x; j < x + 4; j++ {
-				term.SetCell(j, i, ' ', term.ColorDefault, term.ColorGreen)
+				term.SetCell(j, i, ' ', term.ColorBlack, term.ColorGreen)
+			}
+		}
+	} else {
+		for i := 0; i <= y; i++ {
+			for j := x; j < x + 4; j++ {
+				term.SetBg(j, i, term.ColorGreen)
 			}
 		}
 	}
+	
+	term.SetCell(x - 1, y, '\u2590', term.ColorGreen, term.ColorCyan)
+	term.SetCell(x + 4, y, '\u258c', term.ColorGreen, term.ColorCyan)
+
 }
